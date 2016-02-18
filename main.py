@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 import dryscrape
 import json
+import requests
 import re
 
 class Option(object):
@@ -16,33 +17,27 @@ class Option(object):
 
 class Scraper(object):
 	def __init__(self, base_url):
-		self.my_url = base_url
-		self.session = dryscrape.Session()
-		self.session.visit(self.my_url)
-		self.response = self.session.body()
-		self.soup = BeautifulSoup(self.response)
-		
+		self.r = requests.get(base_url)
+		self.data = self.r.text
+		self.soup = BeautifulSoup(self.data)
+		self.list = []
+		for n in self.soup.find_all('script'):
+			self.list.append(n)
+
+		#16th index is the correct string we want for AAPL at least.
+
 	def scrape(self):
+		#cast object to a string to parse for "calls" tag
+		raw_options_chain = str(self.list.pop(16))
+
+		startoptions = [a.start() for a in list(re.finditer('calls', raw_options_chain))]
+		endoptions = [a.start() for a in list(re.finditer('_options', raw_options_chain))]
 		
-		#Grab everything from google.finance.data to end of JSON.
-		self.text = str(self.soup)
-		self.startpoints = [a.end() for a in list(re.finditer("{ \"calls\"", self.text))]
-		print(self.startpoints)
-		
-		self.javascript_string = self.text[self.startpoints[1]:]
-		#grab the ending position of put JSON string
-		#self.put_ending_location = [a.end() for a in list(re.finditer("puts:", self.javascript_string))]
-		#self.call_starting_location = [a.end() for a in list(re.finditer("calls:", self.javascript_string))]
-		#print(self.put_ending_location)
-		#print(self.call_starting_location)
+		raw_options_chain = raw_options_chain[startoptions[0]-2:endoptions[0]-2]
 
-		#self.put_json_string = json.dumps(self.javascript_string[self.put_ending_location[0]: self.call_starting_location[0]-7])
-		#Removed the backslashes
-		#self.put_json_string = self.put_json_string.replace("\\", "")
-		#print(self.javascript_string)
-		#self.put_json_list = json.loads('{cid:"564463958661698",name:"",s:"AAPL160219P00081000",e:"OPRA",p:"0.01",cs:"chr",c:"-0.04",cp:"-80.00",b:"0.01",a:"0.02",oi:"10515",vol:"1543",strike:"81.00",expiry:"Feb 19, 2016"}')
-
-
+		options_json = json.loads(raw_options_chain)
+		print(options_json)
+	
 		
 	
 	def returnCallListAsJSON(self):
