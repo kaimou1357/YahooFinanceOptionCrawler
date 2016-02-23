@@ -4,6 +4,8 @@ import json
 import requests
 import threading
 import re
+import csv
+
 
 def main():
 
@@ -17,8 +19,23 @@ def main():
 	s = Scraper(base_url)
 	call_list = s.returnCallListAsJSON()
 
+
 	for option in call_list:
 		print(option['contractSymbol'] + " " + option['strike']['fmt'] + " " + option['ask']['fmt'] + " " )
+
+# .csv file creation
+
+	create_copy = raw_input(str("Would you like to create a copy of the data (Yes/No)?"))
+
+	if create_copy == 'Yes' or 'yes':
+		csvfile = open("test.csv",'wb')
+		csvwriter = csv.writer(csvfile, delimiter = ',')
+		for option in call_list:
+			csvwriter.writerow([option['contractSymbol'], option['strike']['fmt'], option['ask']['fmt']])
+		csvfile.close()
+	else:
+		input("Would you like to search for another set of Option Data (Yes/No)?")
+#unfinished
 
 
 class Scraper(object):
