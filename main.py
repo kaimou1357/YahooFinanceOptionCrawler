@@ -20,8 +20,8 @@ def main():
 	call_list = s.returnCallListAsJSON()
 
 
-	for option in call_list:
-		print(option['contractSymbol'] + " " + option['strike']['fmt'] + " " + option['ask']['fmt'] + " " )
+	#for option in call_list:
+	#	print(option['contractSymbol'] + " " + option['strike']['fmt'] + " " + option['ask']['fmt'] + " " )
 
 # .csv file creation
 
@@ -30,8 +30,9 @@ def main():
 	if create_copy == 'Yes' or 'yes':
 		csvfile = open("test.csv",'wb')
 		csvwriter = csv.writer(csvfile, delimiter = ',')
+		csvwriter.writerows(['Underlying Ticker', 'Strike Price', 'Ask', 'Bid'])
 		for option in call_list:
-			csvwriter.writerow([option['contractSymbol'], option['strike']['fmt'], option['ask']['fmt']])
+			csvwriter.writerows([option['contractSymbol'], option['strike']['fmt'], option['ask']['fmt'], option['bid']['fmt']])
 		csvfile.close()
 	else:
 		input("Would you like to search for another set of Option Data (Yes/No)?")
@@ -67,4 +68,3 @@ class Scraper(object):
 
 
 main()
-#Implement a way to POST parameters via user input rather than hard code.
