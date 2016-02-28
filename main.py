@@ -4,29 +4,16 @@ import json
 import requests
 import re
 import csv
-
-
+import sys
 
 def main():
 
 	base_url = 'http://finance.yahoo.com/q/op?s='
 	ticker = raw_input(str("Enter the Ticker you would like to view Options Data for: "))
-
 	base_url = base_url + ticker + "+Options"
 	s = Scraper(base_url)
-	#thr = threading.Thread(target = s.returnCallListAsJSON, args = (), kwargs = {})
-	#p = Pool(5)
-	#call_list = p.map(s.returnCallListAsJSON)
 	call_list = s.returnCallListAsJSON()
 	create_csv(call_list);
-
-
-
-	#for option in call_list:
-	#	print(option['contractSymbol'] + " " + option['strike']['fmt'] + " " + option['ask']['fmt'] + " " )
-
-# .csv file creation
-
 
 def create_csv(call_list):
 
@@ -50,7 +37,8 @@ class Scraper(object):
 
 	def returnCallListAsJSON(self):
 		#16th index will give us the correct <script> tags for options_chain data.
-		while True:
+		num_of_tries = 0
+		while num_of_tries<20:
 			try:
 				r = requests.get(self.base_url)
 				data = r.text
@@ -69,9 +57,11 @@ class Scraper(object):
 				options_json = json.loads(raw_options_chain)
 
 				calls_list = options_json['calls']
-				break
+
 			except IndexError:
+				num_of_tries+=1
 				continue
+			break
 
 		return calls_list
 
