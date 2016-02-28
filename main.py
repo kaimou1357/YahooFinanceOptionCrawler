@@ -36,13 +36,13 @@ class Scraper(object):
 
 		startoptions = [a.start() for a in list(re.finditer('calls', raw_options_chain))]
 		endoptions = [a.start() for a in list(re.finditer('_options', raw_options_chain))]
-		
+
 		raw_options_chain = raw_options_chain[startoptions[0]-2:endoptions[0]-2]
 
 		options_json = json.loads(raw_options_chain)
 
 		calls_list = options_json['calls']
-		
+
 		return calls_list
 	def returnPutListAsJSON(self):
 		scrape()
@@ -50,7 +50,3 @@ class Scraper(object):
 
 main()
 #Implement a way to POST parameters via user input rather than hard code.
-
-
-
-
