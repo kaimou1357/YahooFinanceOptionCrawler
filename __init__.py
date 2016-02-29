@@ -6,7 +6,7 @@ import requests
 import re
 import csv
 import sys
-app = Flask(__name__, static_url_path = '')
+app = Flask(__name__)
 
 
 def create_csv(call_list, file_name):
@@ -50,9 +50,9 @@ def root():
 
 @app.route('/filegenerate', methods = ['GET'] )
 def returncsvfile():
-    file_name = request.args['inputFileName'] + ".csv"
+    file_name = "/YahooFinanceOptionCrawler" + request.args['inputFileName'] + ".csv"
     processticker(request.args['inputTicker'], file_name)
     return send_file(file_name, as_attachment = True)
 
 if __name__ == "__main__":
-    app.run(debug = True,threaded = True)
+    app.run()
