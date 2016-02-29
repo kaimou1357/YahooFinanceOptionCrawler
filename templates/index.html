@@ -10,8 +10,10 @@
   <div class="jumbotron">
         <h1>Welcome to the Option-Chain Scraper</h1>
         <form action="/filegenerate" method="get" enctype="multipart/form-data">
-                    <input type="text" name="inputTicker" />
-                    <input type = "text" name = "inputFileName"/>
+                    Ticker:<br>
+                    <input type="text" name="inputTicker" hint = "Ticker Name" /><br>
+                    File Name to be Received:<br>
+                    <input type = "text" name = "inputFileName" hint = "File Name"/>
                     <input type="submit" />
         </form>
       </div>
