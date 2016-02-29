@@ -50,7 +50,7 @@ def root():
 
 @app.route('/filegenerate', methods = ['GET'] )
 def returncsvfile():
-    file_name = "/YahooFinanceOptionCrawler" + request.args['inputFileName'] + ".csv"
+    file_name = "/YahooFinanceOptionCrawler/" + request.args['inputFileName'] + ".csv"
     processticker(request.args['inputTicker'], file_name)
     return send_file(file_name, as_attachment = True)
 
