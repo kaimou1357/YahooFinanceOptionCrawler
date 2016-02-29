@@ -1,0 +1,36 @@
+<!-- extend from base layout -->
+<!doctype html>
+  <html>
+  <head>
+    <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
+    <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+  </head>
+
+
+  <div class="jumbotron">
+        <h1>Welcome to the Option-Chain Scraper</h1>
+        <form action="/filegenerate" method="get" enctype="multipart/form-data">
+                    <input type="text" name="inputTicker" />
+                    <input type = "text" name = "inputFileName"/>
+                    <input type="submit" />
+        </form>
+      </div>
+  </html>
+  <script>
+  $(function() {
+    $('#btnSignUp').click(function() {
+
+        $.ajax({
+            url: '/filegenerate',
+            data: $('form').serialize(),
+            type: 'GET',
+            success: function(response) {
+                console.log(response);
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
+    });
+});
+  </script>
