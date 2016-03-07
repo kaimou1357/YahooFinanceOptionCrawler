@@ -8,11 +8,12 @@ import csv
 import sys
 app = Flask(__name__)
 
+server_directoy = "/home/psp219/YahooFinanceOptionCrawler/"
 
 def create_csv(call_list, file_name):
 
-    csvfile = open("/home/psp219/YahooFinanceOptionCrawler" + file_name,'wb')
-    csvwriter = csv.writer(csvfile, delimiter = ',')
+    csvfile = open(file_name,'wb')
+    csvwriter = csv.writer(server_directoy + csvfile, delimiter = ',')
     csvwriter.writerow(['Underlying Ticker', 'Strike Price', 'Ask', 'Bid','Volume','Open Interest'])
     for option in call_list:
         if option['volume']['fmt'] != "0" and option['ask']['fmt'] != '0' and option['openInterest']['fmt'] != '0':
@@ -44,15 +45,22 @@ def processticker(ticker, file_name):
             continue
         break
 
+
 @app.route('/')
 def root():
     return render_template("index.html")
 
+@app.errorhandler(500)
+def server_error(e):
+    return render_template('error.html'), 500
 
 @app.route('/filegenerate', methods = ['GET'] )
 def returncsvfile():
     file_name = request.args['inputTicker'] + "_options_info.csv"
-    processticker(request.args['inputTicker'], file_name)
+    try:
+        processticker(request.args['inputTicker'], file_name)
+    except ValueError:
+        return render_template("index.html")
     return send_file(file_name, as_attachment = True)
 
 if __name__ == "__main__":
