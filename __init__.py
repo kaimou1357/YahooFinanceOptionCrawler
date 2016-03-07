@@ -10,6 +10,7 @@ app = Flask(__name__)
 
 
 def create_csv(call_list, file_name):
+
     csvfile = open("/home/psp219/YahooFinanceOptionCrawler/" + file_name,'wb')
     csvwriter = csv.writer(csvfile, delimiter = ',')
     csvwriter.writerow(['Underlying Ticker', 'Strike Price', 'Ask', 'Bid'])
@@ -25,7 +26,6 @@ def processticker(ticker, file_name):
         try:
             r = requests.get(base_url)
             data = r.text
-            #print(self.r.text)
             soup = BeautifulSoup(data, 'lxml')
             option_list = []
             for n in soup.find_all('script'):
@@ -57,4 +57,4 @@ def returncsvfile():
     return send_file(file_name, as_attachment = True)
 
 if __name__ == "__main__":
-    app.run(host = '192.168.1.176', port=5000)
+    app.run()
