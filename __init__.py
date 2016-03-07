@@ -13,10 +13,10 @@ server_directoy = "/home/psp219/YahooFinanceOptionCrawler/"
 def create_csv(call_list, file_name):
 
     csvfile = open(file_name,'wb')
-    csvwriter = csv.writer(server_directoy + csvfile, delimiter = ',')
+    csvwriter = csv.writer(csvfile, delimiter = ',')
     csvwriter.writerow(['Underlying Ticker', 'Strike Price', 'Ask', 'Bid','Volume','Open Interest'])
     for option in call_list:
-        if option['volume']['fmt'] != "0" and option['ask']['fmt'] != '0' and option['openInterest']['fmt'] != '0':
+        if option['volume']['fmt'] != "0" and option['ask']['fmt'] != '0' and option['bid']['raw'] != 0 and option['openInterest']['fmt'] != '0':
             csvwriter.writerow([option['contractSymbol'], option['strike']['fmt'], option['ask']['fmt'], option['bid']['fmt'], option['volume']['fmt'], option['openInterest']['fmt']])
     csvfile.close()
 
