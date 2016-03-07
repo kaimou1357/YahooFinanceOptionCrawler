@@ -11,11 +11,12 @@ app = Flask(__name__)
 
 def create_csv(call_list, file_name):
 
-    csvfile = open("/home/psp219/YahooFinanceOptionCrawler/" + file_name,'wb')
+    csvfile = open(file_name,'wb')
     csvwriter = csv.writer(csvfile, delimiter = ',')
-    csvwriter.writerow(['Underlying Ticker', 'Strike Price', 'Ask', 'Bid'])
+    csvwriter.writerow(['Underlying Ticker', 'Strike Price', 'Ask', 'Bid','Volume','Open Interest'])
     for option in call_list:
-        csvwriter.writerow([option['contractSymbol'], option['strike']['fmt'], option['ask']['fmt'], option['bid']['fmt']])
+        if option['volume']['fmt'] != "0" and option['ask']['fmt'] != '0' and option['openInterest']['fmt'] != '0':
+            csvwriter.writerow([option['contractSymbol'], option['strike']['fmt'], option['ask']['fmt'], option['bid']['fmt'], option['volume']['fmt'], option['openInterest']['fmt']])
     csvfile.close()
 
 
@@ -51,8 +52,6 @@ def root():
 @app.route('/filegenerate', methods = ['GET'] )
 def returncsvfile():
     file_name = request.args['inputFileName'] + ".csv"
-    if file_name is None:
-        app.logger.warning("Could not find the file!")
     processticker(request.args['inputTicker'], file_name)
     return send_file(file_name, as_attachment = True)
 
