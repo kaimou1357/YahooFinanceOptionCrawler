@@ -1,5 +1,24 @@
 <!-- extend from base layout -->
-<!doctype html>
+
+{% block content %}
+    <h2>Option Scraper<h2>
+        <h3><table><form action="" method="POST">
+          <td>
+          <label>Select :</label>
+            <select name="option" width="300px">
+              {% for o in option_list %}
+                <option name="{{ o.optid }}" SELECTED>{{ o.optid }}</option>
+              </select>
+              </td>
+            <td>
+              <input class="button1" type="submit" value="Select">
+            </td>
+              {% endfor %}
+        </form></table><h3>
+
+  </div>
+{% endblock content %}
+<!-- <!doctype html>
   <html>
   <head>
     <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
@@ -11,11 +30,21 @@
         <h1>Welcome to the Option-Chain Scraper</h1>
         <form action="/filegenerate" method="get" enctype="multipart/form-data">
                     Ticker:<br>
-                    <input type="text" name="inputTicker" hint = "Ticker Name" /><br>
+                    <input type="text" id = "ticker" name="inputTicker" hint = "Ticker Name" /><br>
+
+                    <h6>Expiration Date</h6>
+                    <select name="expiration_date" hint = "Expiration Date">
+                        <option value="Red">Red</option>
+                        <option value="Green">Green</option>
+                    </select>
+
                     <input type="Submit" />
+
         </form>
+
       </div>
   </html>
+
   <script>
   $(function() {
     $('#btnSignUp').click(function() {
@@ -33,4 +62,4 @@
         });
     });
 });
-  </script>
+  </script> -->
