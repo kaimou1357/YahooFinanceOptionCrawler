@@ -1,4 +1,4 @@
-from flask import send_file, render_template, Flask, request
+from flask import send_file, render_template, Flask, request, jsonify
 import scraper
 import json
 
@@ -18,9 +18,17 @@ def returncsvfile():
     file_name = request.args['inputTicker'] + "_options.csv"
     try:
         scraper.generateExpirationDates(request.args['inputTicker'])
+        #Temporarily added for Nathan to debug.
+        scraper.processticker(request.args['inputTicker'], file_name, "http://finance.yahoo.com/q/op?s=" + request.args['inputTicker'] + "+Options")
     except ValueError:
         return render_template("error.html")
     return send_file(file_name, as_attachment = True)
+@app.route('/generate_dates', methods = ['GET'])
+def generate_date():
+    ticker = request.args['inputTicker']
+    date_dictionary = scraper.generateExpirationDates(ticker)
+    print(date_dictionary.keys())
+    return jsonify(result = date_dictionary.keys())
 
 if __name__ == "__main__":
     app.run(debug = True)

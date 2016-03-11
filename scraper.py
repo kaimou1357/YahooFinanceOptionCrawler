@@ -30,8 +30,7 @@ def generateExpirationDates(ticker):
     for pair in soup.find_all('option'):
         expiration_dictionary[pair.get_text()] = yahoo_url + pair['data-selectbox-link']
     #Debug Code
-    for item in expiration_dictionary.keys():
-        print(item +  " " + expiration_dictionary[item])
+    return expiration_dictionary
 
 def processticker(ticker, file_name, dated_url):
     #base_url = "http://finance.yahoo.com/q/op?s=" + ticker + "+Options"
