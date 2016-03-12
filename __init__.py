@@ -16,6 +16,7 @@ def server_error(e):
 @app.route('/filegenerate', methods = ['GET'] )
 def returncsvfile():
     file_name = request.args['inputTicker'] + "_options.csv"
+    print(request.args['expiration_dates'])
     try:
         #scraper.generateExpirationDates(request.args['inputTicker'])
         #Temporarily added for Nathan to debug.
@@ -28,7 +29,7 @@ def returncsvfile():
 def generate_date():
     ticker = request.args['inputTicker']
     date_dictionary = scraper.generateExpirationDates(ticker)
-    print(json.dumps(date_dictionary))
+    #print(json.dumps(date_dictionary))
     return jsonify(**date_dictionary)
 
 if __name__ == "__main__":
