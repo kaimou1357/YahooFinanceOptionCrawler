@@ -1,3 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<div class = "container">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">Yahoo Finance Options Scraper</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="/">Home<span class="sr-only">(current)</span></a></li>
+        <li><a href="about.html">About Us</a></li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+    <title>Options Scraper</title>
+
+    <!-- Bootstrap -->
+    <link href="static/css/bootstrap.min.css" rel="stylesheet">
+  </head>
+  <body>
+    <form action = "/filegenerate" method = "get" enctype = "multipart/form-data" id = "tickerForm">
+      <div class = "row">
+        <div class = "col-xs-4">
+          <div class = "form-group">
+            <label for= "inputTicker">Input Ticker</label>
+            <input type = "text" class = "form-control" name = "inputTicker" id = "inputTicker" placeHolder = "(Ex: AAPL, IBM)" form = "tickerForm" >
+          </div>
+        </div>
+      </div>
+      <div class = "row">
+        <div class = "col-xs-4">
+          <div class = "form-group">
+            <label for = "expiration_dates">Expiration Dates</label>
+            <select name = "option_expiration" id = 'expiration_dates' form = "tickerForm" class = "form-control"></select>
+          </div>
+        </div>
+      </div>
+      <div class = "row">
+        <div class = "col-xs-4">
+          <label class="radio-inline"><input type="radio" name="straddleradio">Straddle View</label>
+          <label class="radio-inline"><input type="radio" name="listradio">List View</label>
+        </div>
+      </div>
+    </br>
+
+    <input class="btn btn-default" type="submit" value="Submit">
+
+
+    </form>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="static/js/bootstrap.min.js"></script>
+  </body>
+</div>
+</html>
+<!--
 <!doctype html>
 <meta charset=utf-8>
   <html>
@@ -20,10 +94,11 @@
         <select name = "option_expiration" id = 'expiration_dates' form = "tickerForm"></select>
 
       </div>
-  </html>
+  </html> -->
+
   <script type=text/javascript>
     var typingTimer;
-    var doneTypingInterval = 1000;
+    var doneTypingInterval = 500;
     $('#inputTicker').keyup(function(){
       clearTimeout(typingTimer);
       if ($('#inputTicker').val) {
