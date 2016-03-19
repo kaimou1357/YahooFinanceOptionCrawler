@@ -16,11 +16,9 @@ def server_error(e):
 @app.route('/filegenerate', methods = ['GET'] )
 def returncsvfile():
     file_name = request.args['inputTicker'] + "_options.csv"
-    print(request.args['expiration_dates'])
     try:
-        #scraper.generateExpirationDates(request.args['inputTicker'])
         #Temporarily added for Nathan to debug.
-        scraper.processticker(request.args['inputTicker'], file_name, "http://finance.yahoo.com/q/op?s=" + request.args['inputTicker'] + "+Options")
+        scraper.processticker(request.args['inputTicker'], file_name, request.args['option_expiration'])
     except ValueError:
         return render_template("error.html")
     return send_file(file_name, as_attachment = True)

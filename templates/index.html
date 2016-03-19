@@ -1,4 +1,5 @@
 <!doctype html>
+<meta charset=utf-8>
   <html>
   <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
@@ -8,17 +9,15 @@
 
   <div class="jumbotron">
         <h1>Welcome to the Option-Chain Scraper</h1>
-        <form action="/filegenerate" method="get" enctype="multipart/form-data">
-                    Ticker:<br>
-                    <input type="text" name="inputTicker" id = 'inputTicker' hint = "Ticker Name" /><br>
-
+        <form action="/filegenerate" method="get" enctype="multipart/form-data" id = "tickerForm">
+                    Ticker:
+                    <input type="text" name="inputTicker" id = 'inputTicker' hint = "Ticker Name" />
                     </br>
                     <h5>Expiration Dates</h5>
-                    <select name = "option_expiration" id = 'expiration_dates' form = "expiration_dates">
-                    </select>
                     <input type="Submit"/>
-
         </form>
+        </br>
+        <select name = "option_expiration" id = 'expiration_dates' form = "tickerForm"></select>
 
       </div>
   </html>
@@ -36,6 +35,7 @@
 
     function doneTyping(){
       var $select = $('#expiration_dates');
+      $select.empty();
       $.ajax({
         url: '/generate_dates',
         data: {
@@ -45,6 +45,7 @@
         success: function(response){
           $.each(response, function(key, value){
             $select.append('<option value =' + value + '>' + key + '</option>');
+            //alert(value + key);
 
           })
         }
