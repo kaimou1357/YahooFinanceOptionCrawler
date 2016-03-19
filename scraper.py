@@ -1,6 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
-from datetime import datetime
+from collections import OrderedDict
 import re
 import json
 import csv
@@ -30,10 +30,12 @@ def generateExpirationDates(ticker):
     expiration_dictionary  = {}
     for pair in soup.find_all('option'):
         #get last 10 digits of the int. This will give us the correct integer for the date that the user clicked.
-        expiration_dictionary[pair.get_text()] = pair['data-selectbox-link'][-10:]
+        expiration_dictionary[int(pair['value'])] = pair.get_text()
     #Debug Code
+    od = OrderedDict(sorted(expiration_dictionary.items(), key = lambda t: t[1]))
+    #print(od)
 
-    return expiration_dictionary
+    return od
 
 def processticker(ticker, file_name, date_int):
     base_url = "http://finance.yahoo.com/q/op"
@@ -50,8 +52,6 @@ def processticker(ticker, file_name, date_int):
 
             for pair in soup.find_all('option'):
                 expiration_dictionary[pair.get_text()] = yahoo_url + pair['data-selectbox-link']
-
-
             for n in soup.find_all('script'):
                 option_list.append(n)
             raw_options_chain = str(option_list.pop(16))

@@ -1,6 +1,7 @@
 from flask import send_file, render_template, Flask, request, jsonify
 import scraper
 import json
+from collections import OrderedDict
 
 app = Flask(__name__)
 
@@ -27,8 +28,8 @@ def returncsvfile():
 def generate_date():
     ticker = request.args['inputTicker']
     date_dictionary = scraper.generateExpirationDates(ticker)
-    #print(json.dumps(date_dictionary))
-    return jsonify(**date_dictionary)
+    print(date_dictionary)
+    return jsonify(date_dictionary)
 
 if __name__ == "__main__":
     app.run(debug = True)

@@ -12,11 +12,11 @@
         <form action="/filegenerate" method="get" enctype="multipart/form-data" id = "tickerForm">
                     Ticker:
                     <input type="text" name="inputTicker" id = 'inputTicker' hint = "Ticker Name" />
-                    </br>
-                    <h5>Expiration Dates</h5>
+
+
                     <input type="Submit"/>
         </form>
-        </br>
+        <h5>Pick the expiration date</h5>
         <select name = "option_expiration" id = 'expiration_dates' form = "tickerForm"></select>
 
       </div>
@@ -44,7 +44,7 @@
         type: "GET",
         success: function(response){
           $.each(response, function(key, value){
-            $select.append('<option value =' + value + '>' + key + '</option>');
+            $select.append('<option value =' + key + '>' + value + '</option>');
             //alert(value + key);
 
           })
