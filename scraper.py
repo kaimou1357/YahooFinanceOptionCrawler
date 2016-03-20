@@ -32,10 +32,9 @@ def generateExpirationDates(ticker):
         #get last 10 digits of the int. This will give us the correct integer for the date that the user clicked.
         expiration_dictionary[int(pair['value'])] = pair.get_text()
     #Debug Code
-    od = OrderedDict(sorted(expiration_dictionary.items(), key = lambda t: t[1]))
     #print(od)
 
-    return od
+    return expiration_dictionary
 
 def processticker(ticker, file_name, date_int):
     base_url = "http://finance.yahoo.com/q/op"
