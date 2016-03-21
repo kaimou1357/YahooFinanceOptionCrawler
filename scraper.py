@@ -14,11 +14,35 @@ def create_csv(call_list, put_list, file_name):
     csvwriter = csv.writer(csvfile, delimiter = ',')
     csvwriter.writerow(['Call Information'])
     csvwriter.writerow(['Underlying Ticker', 'Bid', 'Ask','Volume','Open Interest', 'Expiration Date'])
-    for option in call_list:
-        if option['volume']['fmt'] != "0" and option['ask']['fmt'] != '0' and option['bid']['raw'] != 0 and option['openInterest']['fmt'] != '0':
-            csvwriter.writerow([option['contractSymbol'], option['bid']['fmt'], option['ask']['fmt'], option['volume']['fmt'], option['openInterest']['fmt'], option['expiration']['fmt'], option['strike']['fmt']])
+    callPrinted = False
+    putPrinted = False
+    for i in range(len(call_list)):
+        #print(call_list[i])
+        if call_list[i]['volume']['fmt'] != "0" and call_list[i]['ask']['fmt'] != '0' and call_list[i]['bid']['raw'] != 0 and call_list[i]['openInterest']['fmt'] != '0':
+            callPrinted = True
+            #csvwriter.writerow([option['contractSymbol'], option['bid']['fmt'], option['ask']['fmt'], option['volume']['fmt'], option['openInterest']['fmt'], option['expiration']['fmt'], option['strike']['fmt']])
+        if put_list[i]['volume']['fmt'] != "0" and put_list[i]['ask']['fmt'] != '0' and put_list[i]['bid']['raw'] != 0 and put_list[i]['openInterest']['fmt'] != '0':
+            putPrinted = True
+        if putPrinted and callPrinted:
+            print("lol")
+
+            #print both call and puts
+            #assign callPrinted and putPrinted to false
+        if putPrinted and (not callPrinted):
+            print("lol")
+            #print puts and assign putPrinted to false
+        if callPrinted and not putPrinted:
+            print("lol")
+            #print calls and asisgn callPrinted to false
         else:
-            csvwriter.writerow(["", "", "", "", "", "", option['strike']['fmt']])
+            print("lol")
+            #both put printed and call printed are blank. Print strike and go to next line.
+
+        # else:
+        #     csvwriter.writerow(["", "", "", "", "", "", option['strike']['fmt']])
+
+
+        csvwriter.writerow([call_list[i]['contractSymbol'], put_list[i]['contractSymbol']])
     csvfile.close()
 
 def generateExpirationDates(ticker):
