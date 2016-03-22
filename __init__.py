@@ -28,7 +28,6 @@ def returncsvfile():
 def generate_date():
     ticker = request.args['inputTicker']
     date_dictionary = scraper.generateExpirationDates(ticker)
-    print(date_dictionary)
     return jsonify(date_dictionary)
 
 @app.route('/about')
