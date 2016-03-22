@@ -12,7 +12,7 @@ def create_csv(call_list, put_list, file_name):
 
     csvfile = open(file_name,'wb')
     csvwriter = csv.writer(csvfile, delimiter = ',')
-    csvwriter.writerow(['Call Information', '', '', '', '', '', 'Put Information' ])
+    csvwriter.writerow(['Call Information', '', '', '', '', '',"",'Put Information' ])
     csvwriter.writerow(['Underlying Ticker', 'Bid', 'Ask','Volume','Open Interest', 'Expiration Date', 'Strike Price', 'Underlying Ticker', 'Bid', 'Ask','Volume','Open Interest', 'Expiration Date'])
     callPrinted = False
     putPrinted = False
@@ -21,9 +21,10 @@ def create_csv(call_list, put_list, file_name):
         if call_list[i]['volume']['raw'] != 0 and call_list[i]['ask']['raw'] != 0 and call_list[i]['bid']['raw'] != 0 and call_list[i]['openInterest']['raw'] != 0:
             callPrinted = True
             #csvwriter.writerow([option['contractSymbol'], option['bid']['fmt'], option['ask']['fmt'], option['volume']['fmt'], option['openInterest']['fmt'], option['expiration']['fmt'], option['strike']['fmt']])
-        if put_list[i]['volume']['fmt'] != "0" and put_list[i]['ask']['fmt'] != '0' and put_list[i]['bid']['raw'] != 0 and put_list[i]['openInterest']['fmt'] != '0':
+        if put_list[i]['volume']['raw'] != 0 and put_list[i]['ask']['raw'] != 0 and put_list[i]['bid']['raw'] != 0 and put_list[i]['openInterest']['raw'] != 0:
             putPrinted = True
-
+        if (not callPrinted)and (not putPrinted):
+            csvwriter.writerow(["", "", "", "", "", "", call_list[i]['strike']['fmt']])
 
         if putPrinted and callPrinted:
             csvwriter.writerow([call_list[i]['contractSymbol'], call_list[i]['bid']['fmt'], call_list[i]['ask']['fmt'], call_list[i]['volume']['fmt'], call_list[i]['openInterest']['fmt'], call_list[i]['expiration']['fmt'], call_list[i]['strike']['fmt'], put_list[i]['contractSymbol'], put_list[i]['bid']['fmt'], put_list[i]['ask']['fmt'], put_list[i]['volume']['fmt'], put_list[i]['openInterest']['fmt'], put_list[i]['expiration']['fmt']])
@@ -42,8 +43,7 @@ def create_csv(call_list, put_list, file_name):
             callPrinted = False
 
             #print calls and asisgn callPrinted to false
-        if (not callPrinted)and (not putPrinted):
-            csvwriter.writerow(["", "", "", "", "", "", call_list[i]['strike']['fmt']])
+
 
         # else:
         #     csvwriter.writerow(["", "", "", "", "", "", option['strike']['fmt']])
