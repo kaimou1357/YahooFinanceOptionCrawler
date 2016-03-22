@@ -12,8 +12,8 @@ def create_csv(call_list, put_list, file_name):
 
     csvfile = open(file_name,'wb')
     csvwriter = csv.writer(csvfile, delimiter = ',')
-    csvwriter.writerow(['Call Information'])
-    csvwriter.writerow(['Underlying Ticker', 'Bid', 'Ask','Volume','Open Interest', 'Expiration Date'])
+    csvwriter.writerow(['Call Information', '', '', '', '', '', 'Put Information' ])
+    csvwriter.writerow(['Underlying Ticker', 'Bid', 'Ask','Volume','Open Interest', 'Expiration Date', 'Strike Price', 'Underlying Ticker', 'Bid', 'Ask','Volume','Open Interest', 'Expiration Date'])
     callPrinted = False
     putPrinted = False
     for i in range(len(call_list)):
@@ -24,12 +24,15 @@ def create_csv(call_list, put_list, file_name):
         if put_list[i]['volume']['fmt'] != "0" and put_list[i]['ask']['fmt'] != '0' and put_list[i]['bid']['raw'] != 0 and put_list[i]['openInterest']['fmt'] != '0':
             putPrinted = True
         if putPrinted and callPrinted:
-            print("lol")
-
+            csvwriter.writerow([call_list[i]['contractSymbol'], call_list[i]['bid']['fmt'], call_list[i]['ask']['fmt'], call_list[i]['volume']['fmt'], call_list[i]['openInterest']['fmt'], call_list[i]['expiration']['fmt'], call_list[i]['strike']['fmt'], put_list[i]['contractSymbol'], put_list[i]['bid']['fmt'], put_list[i]['ask']['fmt'], put_list[i]['volume']['fmt'], put_list[i]['openInterest']['fmt'], put_list[i]['expiration']['fmt']])
+            putPrinted = False
+            callPrinted = False
             #print both call and puts
             #assign callPrinted and putPrinted to false
-        if putPrinted and (not callPrinted):
-            print("lol")
+        if putPrinted and not callPrinted:
+            csvwriter.writerow(['', '', '', '', '', '', call_list[i]['strike']['fmt'], put_list[i]['contractSymbol'], put_list[i]['bid']['fmt'], put_list[i]['ask']['fmt'], put_list[i]['volume']['fmt'], put_list[i]['openInterest']['fmt'], put_list[i]['expiration']['fmt']])
+            putPrinted = False
+            callPrinted = False
             #print puts and assign putPrinted to false
         if callPrinted and not putPrinted:
             print("lol")
@@ -42,7 +45,7 @@ def create_csv(call_list, put_list, file_name):
         #     csvwriter.writerow(["", "", "", "", "", "", option['strike']['fmt']])
 
 
-        csvwriter.writerow([call_list[i]['contractSymbol'], put_list[i]['contractSymbol']])
+        #csvwriter.writerow([call_list[i]['contractSymbol'], put_list[i]['contractSymbol']])
     csvfile.close()
 
 def generateExpirationDates(ticker):
