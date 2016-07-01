@@ -1,6 +1,7 @@
 from flask import send_file, render_template, Flask, request, jsonify
 import scraper
 import json
+import time
 from collections import OrderedDict
 
 app = Flask(__name__)
@@ -17,12 +18,18 @@ def server_error(e):
 @app.route('/filegenerate', methods = ['GET'] )
 def returncsvfile():
     file_name = request.args['inputTicker'] + "_options.csv"
+    isList = True
+    if request.args['viewoption'] == "straddleon":
+    	isList = False
     try:
-        #Temporarily added for Nathan to debug.
-        scraper.processticker(request.args['inputTicker'], file_name, request.args['option_expiration'])
-    except ValueError:
+
+		scraper.processticker(request.args['inputTicker'], file_name, request.args['option_expiration'], isList)
+		return send_file(file_name, as_attachment = True)
+        
+    except ValueError, IOError:
         return render_template("error.html")
-    return send_file(file_name, as_attachment = True)
+
+	return render_template('index.html')
 
 @app.route('/generate_dates', methods = ['GET'])
 def generate_date():

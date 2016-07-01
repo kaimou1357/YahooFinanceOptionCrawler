@@ -16,7 +16,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="/">Derivative Refinery</a>
+      <a class="navbar-brand" href="/">Option Scraper</a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
@@ -28,7 +28,7 @@
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
-    <title>Derivative Refinery</title>
+    <title>Option Scraper</title>
 
     <!-- Bootstrap -->
     <link href="static/css/bootstrap.min.css" rel="stylesheet">
@@ -55,18 +55,22 @@
         <div class = "col-xs-4">
           <div class = "btn-group" data-toggle = "buttons">
             <label class = "btn btn-primary">
-              <label class="radio-inline"><input type="radio" name="straddleradio">Straddle View</label>
+              <label class="radio-inline"><input type="radio" name="viewoption" id = "straddleon" value = "straddleon">Straddle View</label>
             </label>
             <label class = "btn btn-primary">
-              <label class="radio-inline"><input type="radio" name="listradio">List View</label>
+              <label class="radio-inline"><input type="radio" name="viewoption" id = "liston" value = "liston">List View</label>
             </label>
 
+          </div>
+          <div>
+          <br></br>
+            Disclaimer:There are currently bugs with some of less popular stock names. I will look into it as soon as I have more time.
           </div>
         </div>
       </div>
     </br>
 
-    <input class="btn btn-default" type="submit" value="Submit">
+    <input class="btn btn-default" type= submit value="Submit">
 
 
     </form>
@@ -78,31 +82,6 @@
   </body>
 </div>
 </html>
-<!--
-<!doctype html>
-<meta charset=utf-8>
-  <html>
-  <head>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
-  </head>
-
-
-
-  <div class="jumbotron">
-        <h1>Welcome to the Option-Chain Scraper</h1>
-        <form action="/filegenerate" method="get" enctype="multipart/form-data" id = "tickerForm">
-                    Ticker:
-                    <input type="text" name="inputTicker" id = 'inputTicker' hint = "Ticker Name" />
-
-
-                    <input type="Submit"/>
-        </form>
-        <h5>Pick the expiration date</h5>
-        <select name = "option_expiration" id = 'expiration_dates' form = "tickerForm"></select>
-
-      </div>
-  </html> -->
-
   <script type=text/javascript>
     var typingTimer;
     var doneTypingInterval = 500;

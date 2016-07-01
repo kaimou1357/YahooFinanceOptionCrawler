@@ -8,48 +8,58 @@ import csv
 server_directory = "/home/psp219/YahooFinanceOptionCrawler/"
 yahoo_url = "http://finance.yahoo.com"
 
-def create_csv(call_list, put_list, file_name):
-
+def create_csv(call_list, put_list, file_name, listview):
+    
     csvfile = open(file_name,'wb')
     csvwriter = csv.writer(csvfile, delimiter = ',')
-    csvwriter.writerow(['Call Information', '', '', '', '', '',"",'Put Information' ])
-    csvwriter.writerow(['Underlying Ticker', 'Bid', 'Ask','Volume','Open Interest', 'Expiration Date', 'Strike Price', 'Underlying Ticker', 'Bid', 'Ask','Volume','Open Interest', 'Expiration Date'])
-    callPrinted = False
-    putPrinted = False
-    for i in range(len(call_list)):
-        #print(call_list[i])
-        if call_list[i]['volume']['raw'] != 0 and call_list[i]['ask']['raw'] != 0 and call_list[i]['bid']['raw'] != 0 and call_list[i]['openInterest']['raw'] != 0:
-            callPrinted = True
-            #csvwriter.writerow([option['contractSymbol'], option['bid']['fmt'], option['ask']['fmt'], option['volume']['fmt'], option['openInterest']['fmt'], option['expiration']['fmt'], option['strike']['fmt']])
-        if put_list[i]['volume']['raw'] != 0 and put_list[i]['ask']['raw'] != 0 and put_list[i]['bid']['raw'] != 0 and put_list[i]['openInterest']['raw'] != 0:
-            putPrinted = True
-        if (not callPrinted)and (not putPrinted):
-            csvwriter.writerow(["", "", "", "", "", "", call_list[i]['strike']['fmt']])
+    if not listview:
 
-        if putPrinted and callPrinted:
-            csvwriter.writerow([call_list[i]['contractSymbol'], call_list[i]['bid']['fmt'], call_list[i]['ask']['fmt'], call_list[i]['volume']['fmt'], call_list[i]['openInterest']['fmt'], call_list[i]['expiration']['fmt'], call_list[i]['strike']['fmt'], put_list[i]['contractSymbol'], put_list[i]['bid']['fmt'], put_list[i]['ask']['fmt'], put_list[i]['volume']['fmt'], put_list[i]['openInterest']['fmt'], put_list[i]['expiration']['fmt']])
-            putPrinted = False
-            callPrinted = False
+        csvwriter.writerow(['Call Information', '', '', '', '', '',"",'Put Information' ])
+        csvwriter.writerow(['Underlying Ticker', 'Bid', 'Ask','Volume','Open Interest', 'Expiration Date', 'Strike Price', 'Underlying Ticker', 'Bid', 'Ask','Volume','Open Interest', 'Expiration Date'])
+        callPrinted = False
+        putPrinted = False
+        for i in range(len(call_list)):
+            #print(call_list[i])
+            if call_list[i]['volume']['raw'] != 0 and call_list[i]['ask']['raw'] != 0 and call_list[i]['bid']['raw'] != 0 and call_list[i]['openInterest']['raw'] != 0:
+                callPrinted = True
+                #csvwriter.writerow([option['contractSymbol'], option['bid']['fmt'], option['ask']['fmt'], option['volume']['fmt'], option['openInterest']['fmt'], option['expiration']['fmt'], option['strike']['fmt']])
+            if put_list[i]['volume']['raw'] != 0 and put_list[i]['ask']['raw'] != 0 and put_list[i]['bid']['raw'] != 0 and put_list[i]['openInterest']['raw'] != 0:
+                putPrinted = True
+            if (not callPrinted)and (not putPrinted):
+                csvwriter.writerow(["", "", "", "", "", "", call_list[i]['strike']['fmt']])
 
-            #print both call and puts
-            #assign callPrinted and putPrinted to false
-        if putPrinted and (not callPrinted):
-            csvwriter.writerow(['', '', '', '', '', '', call_list[i]['strike']['fmt'], put_list[i]['contractSymbol'], put_list[i]['bid']['fmt'], put_list[i]['ask']['fmt'], put_list[i]['volume']['fmt'], put_list[i]['openInterest']['fmt'], put_list[i]['expiration']['fmt']])
-            putPrinted = False
+            if putPrinted and callPrinted:
+                csvwriter.writerow([call_list[i]['contractSymbol'], call_list[i]['bid']['fmt'], call_list[i]['ask']['fmt'], call_list[i]['volume']['fmt'], call_list[i]['openInterest']['fmt'], call_list[i]['expiration']['fmt'], call_list[i]['strike']['fmt'], put_list[i]['contractSymbol'], put_list[i]['bid']['fmt'], put_list[i]['ask']['fmt'], put_list[i]['volume']['fmt'], put_list[i]['openInterest']['fmt'], put_list[i]['expiration']['fmt']])
+                putPrinted = False
+                callPrinted = False
 
-            #print puts and assign putPrinted to false
-        if callPrinted and (not putPrinted):
-            csvwriter.writerow([call_list[i]['contractSymbol'], call_list[i]['bid']['fmt'], call_list[i]['ask']['fmt'], call_list[i]['volume']['fmt'], call_list[i]['openInterest']['fmt'], call_list[i]['expiration']['fmt'], call_list[i]['strike']['fmt']])
-            callPrinted = False
+                #print both call and puts
+                #assign callPrinted and putPrinted to false
+            if putPrinted and (not callPrinted):
+                csvwriter.writerow(['', '', '', '', '', '', call_list[i]['strike']['fmt'], put_list[i]['contractSymbol'], put_list[i]['bid']['fmt'], put_list[i]['ask']['fmt'], put_list[i]['volume']['fmt'], put_list[i]['openInterest']['fmt'], put_list[i]['expiration']['fmt']])
+                putPrinted = False
 
-            #print calls and asisgn callPrinted to false
+                #print puts and assign putPrinted to false
+            if callPrinted and (not putPrinted):
+                csvwriter.writerow([call_list[i]['contractSymbol'], call_list[i]['bid']['fmt'], call_list[i]['ask']['fmt'], call_list[i]['volume']['fmt'], call_list[i]['openInterest']['fmt'], call_list[i]['expiration']['fmt'], call_list[i]['strike']['fmt']])
+                callPrinted = False
+
+    else:
+        csvwriter.writerow(['Call Information'])
+        csvwriter.writerow(['Underlying Ticker', 'Bid', 'Ask','Volume','Open Interest', 'Expiration Date'])
+        for option in call_list:
+            if option['volume']['fmt'] != "0" and option['ask']['fmt'] != '0' and option['bid']['raw'] != 0 and option['openInterest']['fmt'] != '0':
+                csvwriter.writerow([option['contractSymbol'], option['bid']['fmt'], option['ask']['fmt'], option['volume']['fmt'], option['openInterest']['fmt'], option['expiration']['fmt'], option['strike']['fmt']])
+        else:
+            csvwriter.writerow(["", "", "", "", "", "", option['strike']['fmt']])
+        csvwriter.writerow(['Put Information'])
+        for option in put_list:
+            if option['volume']['fmt'] != "0" and option['ask']['fmt'] != '0' and option['bid']['raw'] != 0 and option['openInterest']['fmt'] != '0':
+                csvwriter.writerow([option['contractSymbol'], option['bid']['fmt'], option['ask']['fmt'], option['volume']['fmt'], option['openInterest']['fmt'], option['expiration']['fmt'], option['strike']['fmt']])
+        else:
+            csvwriter.writerow(["", "", "", "", "", "", option['strike']['fmt']])
 
 
-        # else:
-        #     csvwriter.writerow(["", "", "", "", "", "", option['strike']['fmt']])
-
-
-        #csvwriter.writerow([call_list[i]['contractSymbol'], put_list[i]['contractSymbol']])
     csvfile.close()
 
 def generateExpirationDates(ticker):
@@ -67,7 +77,7 @@ def generateExpirationDates(ticker):
 
     return expiration_dictionary
 
-def processticker(ticker, file_name, date_int):
+def processticker(ticker, file_name, date_int, listview):
     base_url = "http://finance.yahoo.com/q/op"
     num_of_tries = 0
     payload = {'s' : ticker, 'date': date_int}
@@ -92,7 +102,8 @@ def processticker(ticker, file_name, date_int):
             #Extract puts/calls as JSON objects.
             put_list = options_json['puts']
             call_list = options_json['calls']
-            create_csv(call_list, put_list, file_name)
+            print(call_list)
+            create_csv(call_list, put_list, file_name, listview)
 
         except IndexError:
             num_of_tries+=1
